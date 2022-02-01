@@ -4,8 +4,8 @@ buildImage () {
     local profile="$1"
 
     #packages="onion-repo-keys"
-    #make image PROFILE=$profile PACKAGES="$packages"
-    make image PROFILE=$profile
+    #make image PROFILE=$profile PACKAGES="$packages" FILES=files/
+    make image PROFILE=$profile FILES=files/
     
     if [ $? -ne 0 ]; then
         echo "ERROR during image building for $profile"

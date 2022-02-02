@@ -22,4 +22,4 @@ tar -xf $ZIP
 mv $FILE $NEWNAME
 
 ## add the onion package repo to the feeds
-cat add-repositories.conf >> $NEWNAME/repositories.conf
+cat config/new-repositories.conf >> $NEWNAME/repositories.conf

@@ -4,9 +4,13 @@ DIR="openwrt-imagebuilder"
 # copy over required files
 cp -r additions/* ${DIR}/
 
+## specify which packages should be included in the firmware (space separated list)
+# none for now
+packages=""
+
 ## run the image builder
 cd ${DIR}/
-bash build.sh
+bash build.sh "$packages"
 retval=$?
 
 echo " "

@@ -1,16 +1,24 @@
 #!/bin/bash
 
+packageInput="$1"
+
 buildImage () {
     local profile="$1"
+    local packages="$2"
 
-    packages="omega2-base omega2-base-files onion-repo-keys"
-    make image PROFILE=$profile PACKAGES="$packages" FILES=files/
-    
+    local packagesCommand="PACKAGES=\"$packages\""
+    if [ "$packages" == "" ]; then
+      packagesCommand=""
+    fi
+
+    echo make image PROFILE=$profile $packagesCommand
+    #make image PROFILE=$profile PACKAGES="$packages" FILES=files/
+
     if [ $? -ne 0 ]; then
         echo "ERROR during image building for $profile"
         exit 1
-    fi 
+    fi
 }
 
-buildImage onion_omega2
-buildImage onion_omega2p
+buildImage onion_omega2 "$packageInput"
+buildImage onion_omega2p "$packageInput"

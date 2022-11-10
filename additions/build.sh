@@ -5,14 +5,17 @@ packageInput="$1"
 buildImage () {
     local profile="$1"
     local packages="$2"
-
-    local packagesCommand="PACKAGES=\"$packages\""
-    if [ "$packages" == "" ]; then
-      packagesCommand=""
+    
+    local filesCommand="FILE=files/"
+    if [ ! -d ./files ]; then
+        filesCommand=""
     fi
-
-    echo make image PROFILE=$profile $packagesCommand
-    #make image PROFILE=$profile PACKAGES="$packages" FILES=files/
+    
+    if [ "$packages" == "" ]; then
+        make image PROFILE=$profile $filesCommand
+    else
+        make image PROFILE=$profile PACKAGES="$packages" $filesCommand
+    fi
 
     if [ $? -ne 0 ]; then
         echo "ERROR during image building for $profile"

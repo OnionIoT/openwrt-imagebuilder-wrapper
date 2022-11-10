@@ -1,3 +1,5 @@
+#!/bin/bash
+
 DIR="openwrt-imagebuilder"
 
 ## update the image builder

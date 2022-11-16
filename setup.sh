@@ -1,10 +1,13 @@
 #!/bin/bash
 
 ## download and unzip the image builder
-URL="https://downloads.openwrt.org/releases/21.02.1/targets/ramips/mt76x8"
-ZIP="openwrt-imagebuilder-21.02.1-ramips-mt76x8.Linux-x86_64.tar.xz"
-FILE="openwrt-imagebuilder-21.02.1-ramips-mt76x8.Linux-x86_64"
-NEWNAME="openwrt-imagebuilder"
+OPENWRT_VERSION="22.03.2"
+TARGET="ramips"
+SUBTARGET="mt76x8"
+URL="https://downloads.openwrt.org/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET"
+ZIP="openwrt-imagebuilder-$OPENWRT_VERSION-$TARGET-$SUBTARGET.Linux-x86_64.tar.xz"
+FILE="openwrt-imagebuilder-$OPENWRT_VERSION-$TARGET-$SUBTARGET.Linux-x86_64"
+NEWNAME="openwrt-imagebuilder-$OPENWRT_VERSION"
 
 # remove previously configured image builder
 rm -rf $NEWNAME

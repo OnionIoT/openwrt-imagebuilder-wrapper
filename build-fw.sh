@@ -1,8 +1,7 @@
 #!/bin/bash
 
-OPENWRT_VERSION="22.03.2"
-TARGET="ramips"
-SUBTARGET="mt76x8"
+. ./profile
+
 DIR="openwrt-imagebuilder-$OPENWRT_VERSION"
 
 ## update the image builder

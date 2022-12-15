@@ -4,8 +4,7 @@ version: 0.2
 
 env:
   variables:
-    VERSION: "22.03.2"
-    OUTPUT_S3_PATH: "omega2/images"
+    VERSION: "22.03"
 phases:
   install:
     runtime-versions:
@@ -27,7 +26,7 @@ phases:
     commands:
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" = "0" ]; then exit 1; fi
       - bash rename-images.sh
-      - aws s3 cp --recursive ./output/ s3://$OUTPUT_BUCKET/$OUTPUT_S3_PATH
+      - aws s3 cp --recursive ./output/ s3://$OUTPUT_BUCKET/omega2/images/openwrt-$VERSION
 cache:
   paths:
     - /var/cache/apt/**/*

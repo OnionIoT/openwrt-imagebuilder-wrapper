@@ -1,0 +1,191 @@
+#!/bin/bash
+
+cd $(dirname $0)
+
+. ./profile
+
+[ -z "$OPENWRT_VERSION" ] && exit 1
+[ -z "$TARGET" ] && exit 1
+[ -z "$SUBTARGET" ] && exit 1
+
+BUILD_DIR="$PWD"
+
+TARGET_IMAGE_BUILDER_DIR="$BUILD_DIR/openwrt-imagebuilder"
+IMAGE_BUILDER_ZIP="$BUILD_DIR/${IMAGE_BUILDER_URL##*/}"
+IMAGE_BUILDER_FILE="${IMAGE_BUILDER_ZIP//.tar.xz}"
+OUTPUT_DIR="$PWD/output"
+
+DATE=$(date +"%Y%m%d")
+VERSION_INFO="${OPENWRT_VERSION}-${DATE}"
+
+download_file() {
+	local url=$1
+	local output=$2
+
+	[ -e $output ] && return 0
+
+	if ! curl "$url" -o "$output"; then
+		echo "ERROR downloading from $url"
+		return 1
+	fi
+
+	return 0
+}
+
+verify_archive() {
+	local file=$1
+
+	if ! tar tJf "$file" > /dev/null; then
+		echo "ERROR: invalid archive $file"
+		return 1
+	fi
+
+	return 0
+
+}
+
+extract_archive() {
+	local dir=$1
+	local file=$2
+
+	if ! tar -C "$dir" -xJf "$file"; then
+		echo "ERROR: decompression failed for $file"
+		return 1
+	fi
+
+	return 0
+}
+
+builder_exist() {
+	[ -d "$TARGET_IMAGE_BUILDER_DIR" ] && return 0
+
+	echo "image builder not found. To prepare image builder run"
+	echo "$0 setup_imagebuilder"
+
+	return 1
+}
+
+clean_imagebuilder() {
+	[ -d "$TARGET_IMAGE_BUILDER_DIR" ] && rm -rf "$TARGET_IMAGE_BUILDER_DIR"
+	[ -f "$IMAGE_BUILDER_ZIP" ] && rm -f "$IMAGE_BUILDER_ZIP"
+}
+
+verify_builder() {
+	verify_archive "$IMAGE_BUILDER_ZIP"
+}
+
+extract_builder() {
+	extract_archive "$BUILD_DIR" "$IMAGE_BUILDER_ZIP" || return 1
+	clean_imagebuilder
+	mv "$IMAGE_BUILDER_FILE" "$TARGET_IMAGE_BUILDER_DIR" || return 1
+	return 0
+}
+
+download_builder() {
+	download_file "$IMAGE_BUILDER_URL" "$IMAGE_BUILDER_ZIP"
+}
+
+prepare_imagebuilder() {
+	if [ -n "$KEYS_DIR" ] && [ -d "$KEYS_DIR" ]; then
+		cp -a $KEYS_DIR/* $TARGET_IMAGE_BUILDER_DIR/keys/
+	fi
+}
+
+update_package_repos() {
+	## add packages
+
+	[ -z "$PACKAGE_REPOS" ] && return 0
+
+	echo -e "$PACKAGE_REPOS" >> $TARGET_IMAGE_BUILDER_DIR/repositories.conf
+
+	return 0
+}
+
+update_imagebuilder() {
+	builder_exist || return 1
+	update_package_repos || return 1
+}
+
+setup_imagebuilder() {
+	download_builder || return 1
+	verify_builder || return 1
+	extract_builder || return 1
+	update_package_repos || return 1
+	prepare_imagebuilder || return 1
+}
+
+build_image() {
+	local files profile
+
+	profile=$1
+	[ -d "$FILES_DIR" ] && files="FILE=$FILES_DIR"
+
+	if [ -z "$IMAGE_BUILDER_PACKAGES" ]; then
+		make -C "$TARGET_IMAGE_BUILDER_DIR" image PROFILE=$profile $files
+	else
+		make -C "$TARGET_IMAGE_BUILDER_DIR" image PROFILE=$profile PACKAGES="$packages" $files
+	fi
+
+	if [ $? -ne 0 ]; then
+		echo "ERROR during image building for $profile"
+		return 1
+	else
+		[ ! -d "$OUTPUT_DIR" ] && mkdir -p $OUTPUT_DIR
+		target_image="$OUTPUT_DIR/${profile}-${VERSION_INFO}.bin"
+		cp $TARGET_IMAGE_BUILDER_DIR/bin/targets/${TARGET}/${SUBTARGET}/openwrt-${OPENWRT_VERSION}-${TARGET}-${SUBTARGET}-${profile}-squashfs-sysupgrade.bin $target_image
+	fi
+}
+
+build_firmware() {
+	local profiles="$@"
+	local prof
+
+	profiles="${profiles:-${BUILD_PROFILES}}"
+
+	for prof in $profiles; do
+		if build_image "$prof"; then
+			echo "> Compiled firmware at $OUTPUT_DIR"
+		else
+			echo "> Compilation error!"
+			return 1
+		fi
+	done
+}
+
+if [ -z "$TARGET_IMAGE_BUILDER_DIR" ]; then
+	echo "TARGET_IMAGE_BUILDER_DIR can not be empty string"
+	exit 1
+fi
+
+commands="
+setup_imagebuilder
+update_imagebuilder
+clean_imagebuilder
+build_firmware
+build_all_firmware
+"
+
+usage_help() {
+	local cmd
+
+	echo "$0: "
+
+	for cmd in $commands; do
+		echo -e "\t$cmd"
+	done
+}
+
+if [ $# -lt 1 ]; then
+	usage_help
+	exit 1
+fi
+
+if [ "$(type -t $1)" != "function" ]; then
+	echo "$1: function not found"
+	usage_help
+	exit 1
+fi
+
+cmd=$1
+shift
+$cmd $@

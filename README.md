@@ -6,27 +6,27 @@ Tools to build OpenWRT firwmare for the Omega2 and Omega2+ using the [OpenWRT Im
 
 > By default, this repo is setup to build OpenWRT firmware for the Onion Omega2 and Omega2+
 
-1. Run `bash setup.sh` to download and setup the image builder
-2. Run `bash build-fw.sh` to build the firmware
-3. Find the compiled firmware in the `openwrt-imagebuilder/bin/targets/ramips/mt76x8/` directory
+1. Run `bash onion_buildenv setup_imagebuilder` to download and setup the image builder
+2. Run `bash onion_buildenv build_firmware <target>` to build the firmware
+3. Find the compiled firmware in the `output` directory
 
 ## Details
 
-The `setup.sh` script:
+The `bash onion_buildenv setup_imagebuilder` script:
 
 - Will download and setup the OpenWRT image builder
-- Add the package repo specified in `config/new-repositories.conf` to the image builder repository feeds
+- Add the package repo specified as env variable `PACKAGE_REPOS` in a build `profile` to the image builder
  
-The `build-fw.sh` script:
+The `bash onion_buildenv build_all_firmware onion_omega2p` script:
 
 - Will compile firmware for the Onion Omega2 and Omega2+
-- Output binary files will be in the `openwrt-imagebuilder/bin/targets/ramips/mt76x8/` directory
+- Output binary files will be in the `output` directory
 
 ## Adding Packages to the Firmware
 
 OpenWRT packages can be added to the compiled firmware. 
 
-In the `build-fw.sh` script, the line that specifies the `packages` variable controls which packages are included in the firmware. Packages should be in a space separated list.
+In the `bash onion_buildenv build_all_firmware` script, the env variable `IMAGE_BUILDER_PACKAGES` controls which packages are included in the firmware. Each package has to be added in na new line or in a space separated list.
 
 ## The `additions/` Directory
 
@@ -45,11 +45,11 @@ While your packages are still in development, it might be useful to work with **
 To work with local copies of your packages:
 
 1. Say you've set up the OpenWRT SDK and you're compiling packages to your local machine
-2. Update `config/new-repositories.conf` to point to the local packages. See [`config/README.md`](./config/README.md) for details.
+2. Update `PACKAGE_REPOS` env variable to point to the local packages. See [`profiles/README.md`](./profiles/README.md) for details.
 3. Make any changes to your packages and compile them into IPK files
-4. Run `bash setup.sh` to download and setup the image builder
-5. Run `bash build-fw.sh` to build the firmware
-6. Find the compiled firmware in the `openwrt-imagebuilder/bin/targets/ramips/mt76x8/` directory
+4. Run `bash onion_buildenv setup_imagebuilder` to download and setup the image builder
+5. Run `bash onion_buildenv build_firmware` to build the firmware
+6. Find the compiled firmware in the `output` directory
 7. Test the firmware on your device. If more changes to your packages are required, start again from step 3
 
 
@@ -58,11 +58,11 @@ To work with local copies of your packages:
 Say we've used the OpenWRT SDK to build packages locally and the output files can be found at the `/home/ubuntu/openwrt-sdk-wrapper/openwrt-sdk/bin/packages/mipsel_24kc/custom/` directory.
 And say we wanted to build firmware that uses those locally compiled packages, we would do the following:
 
-1. Update `config/new-repositories.conf`:
+1. Update `PACKAGE_REPOS` env variable in a profile file`:
     * comment out the existing line
-    * add a new line: `src custom file:///home/ubuntu/openwrt-sdk-wrapper/openwrt-sdk/bin/packages/mipsel_24kc/custom/`
+    * add a new line: `PACKAGE_REPOS="src custom file:///home/ubuntu/openwrt-sdk-wrapper/openwrt-sdk/bin/packages/mipsel_24kc/custom/"`
 2. Make any changes to your packages and compile them into IPK files
-3. Run `bash setup.sh` to download and setup the image builder
-4. Run `bash build-fw.sh` to build the firmware
-5. Find the compiled firmware in the `openwrt-imagebuilder/bin/targets/ramips/mt76x8/` directory
+3. Run `bash onion_buildenv setup_imagebuilder` to download and setup the image builder
+4. Run `bash onion_buildenv build_firmware` to build the firmware
+5. Find the compiled firmware in the `output` directory
 

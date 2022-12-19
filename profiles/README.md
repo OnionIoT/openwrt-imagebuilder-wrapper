@@ -23,7 +23,7 @@ profile file has predefined env variables which are being used in `onion_builden
 |`ADDITIONS_DIR`|`$PWD/additions`|Location of addinational files to be copied into imagebuilder dir|
 |`PACKAGE_REPOS`|`src/gz onion http://repo.onioniot.com/omega2/packages/openwrt-$OPENWRT_VERSION/onion`|Appends lines to `repositories.conf` in the downloaded OpenWRT Image Builder.<br/>Each feed must be in a new line
 |`IMAGE_BUILDER_PACKAGES`|`onion-repo-keys`</br>`omega2-base`<br/>`omega2-base-files`<br/>`omega2-base-passwd`|Packages to be included in firmware. Each package must be in a new line|
-|`BUILD_MODELS`|`onion_omega2`</br>`onion_omega2p`|Onion Models firmware to be compiled when `onion_buildenv build_all_firmwares` is triggered. Each model must be in a new line|
+|`BUILD_MODELS`|`onion_omega2`</br>`onion_omega2p`|Onion Models firmware to be compiled when `onion_buildenv build_all_firmware` is triggered. Each model must be in a new line|
 
 ## Onion Image Builder Build Environment
 
@@ -37,7 +37,7 @@ profile file is used with `onion_buildenv` script. `onion_buildenv` is all in on
 |`clean_imagebuilder`|Cleanup image builder from local directory|
 |`list_packages`|List all available packages, Internally it uses `./scripts/feeds list`|
 |`build_firmware <model>`|Build firmware for model passed in argument|
-|`build_all_firmwares`|Build firmware for all the models specified in var `BUILD_MODELS`|
+|`build_all_firmware`|Build firmware for all the models specified in var `BUILD_MODELS`|
 
 ## Use custom feed for local/alternative development
 

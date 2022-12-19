@@ -135,7 +135,7 @@ build_firmware() {
 	fi
 }
 
-build_all_firmwares() {
+build_all_firmware() {
 	local profiles="$@"
 	local prof
 
@@ -161,7 +161,7 @@ setup_imagebuilder
 update_imagebuilder
 clean_imagebuilder
 build_firmware
-build_all_firmwares
+build_all_firmware
 "
 
 usage_help() {

@@ -7,7 +7,7 @@ Tools to build OpenWRT firwmare for the Omega2 and Omega2+ using the [OpenWRT Im
 > By default, this repo is setup to build OpenWRT firmware for the Onion Omega2 and Omega2+
 
 1. Run `bash onion_buildenv setup_imagebuilder` to download and setup the image builder
-2. Run `bash onion_buildenv build_all_firmwares` to build the Omega2 and Omega2+ firmware
+2. Run `bash onion_buildenv build_all_firmware` to build the Omega2 and Omega2+ firmware
 3. Find the compiled firmware in the `output` directory
 
 ## Details
@@ -17,14 +17,14 @@ The `bash onion_buildenv setup_imagebuilder` script:
 - Will download and setup the OpenWRT image builder
 - Add the package repo specified as env variable `PACKAGE_REPOS` in a build `profile` to the image builder
  
-The `bash onion_buildenv build_all_firmwares` script:
+The `bash onion_buildenv build_all_firmware` script:
 
 - Will compile firmware for the Onion Omega2 and Omega2+
 - Output binary files will be in the `output` directory
 
 ## Building a Specific Target
 
-By default, the `bash onion_buildenv build_all_firmwares` command will build firmware for the target devices specified in the `BUILD_MODELS` variable in `profiles`.
+By default, the `bash onion_buildenv build_all_firmware` command will build firmware for the target devices specified in the `BUILD_MODELS` variable in `profiles`.
 
 To build for a specific target device, use this command: `bash onion_buildenv build_firmware <target>`
 
@@ -32,7 +32,7 @@ To build for a specific target device, use this command: `bash onion_buildenv bu
 
 OpenWRT packages can be added to the compiled firmware. 
 
-In the `bash onion_buildenv build_all_firmwares` script, the env variable `IMAGE_BUILDER_PACKAGES` controls which packages are included in the firmware. Each package has to be added in na new line or in a space separated list.
+In the `bash onion_buildenv build_all_firmware` script, the env variable `IMAGE_BUILDER_PACKAGES` controls which packages are included in the firmware. Each package has to be added in na new line or in a space separated list.
 
 ## The `additions/` Directory
 

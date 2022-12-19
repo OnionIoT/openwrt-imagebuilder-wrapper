@@ -17,15 +17,14 @@ phases:
   pre_build:
     commands:
       - cd $CODEBUILD_SRC_DIR
-      - bash setup.sh
+      - bash onion_buildenv setup_imagebuilder
   build:
     commands:
-      - bash build-fw.sh
+      - bash onion_buildenv build_all_firmware
 
   post_build:
     commands:
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" = "0" ]; then exit 1; fi
-      - bash rename-images.sh
       - aws s3 cp --recursive ./output/ s3://$OUTPUT_BUCKET/omega2/images/openwrt-$VERSION
 cache:
   paths:

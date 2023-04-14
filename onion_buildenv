@@ -78,6 +78,7 @@ extract_builder() {
 	extract_archive "$BUILD_DIR" "$IMAGE_BUILDER_ZIP" || return 1
 	clean_imagebuilder
 	mv "$IMAGE_BUILDER_FILE" "$TARGET_IMAGE_BUILDER_DIR" || return 1
+	cp $TARGET_IMAGE_BUILDER_DIR/repositories.conf $TARGET_IMAGE_BUILDER_DIR/repositories.conf.org
 	return 0
 }
 
@@ -96,6 +97,7 @@ update_package_repos() {
 
 	[ -z "$PACKAGE_REPOS" ] && return 0
 
+	cp $TARGET_IMAGE_BUILDER_DIR/repositories.conf.org $TARGET_IMAGE_BUILDER_DIR/repositories.conf
 	echo -e "$PACKAGE_REPOS" >> $TARGET_IMAGE_BUILDER_DIR/repositories.conf
 
 	return 0
@@ -118,7 +120,11 @@ build_firmware() {
 	local profile files_dir packages
 
 	profile=$1
-	[ -z "$profile" ] && return 1
+	if [ -z "$profile" ]; then
+		echo "missing profile argument"
+		echo "build_firmware <model>"
+		return 1
+	fi
 
 	files_dir=$ADDITIONS_DIR/files
 	[ -n "$IMAGE_BUILDER_PACKAGES" ] && packages=$(echo -e $IMAGE_BUILDER_PACKAGES | tr '\n' ' ')

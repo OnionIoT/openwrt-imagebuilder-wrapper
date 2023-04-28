@@ -130,6 +130,7 @@ build_firmware() {
 	[ -n "$IMAGE_BUILDER_PACKAGES" ] && packages=$(echo -e $IMAGE_BUILDER_PACKAGES | tr '\n' ' ')
 
 	make -C "$TARGET_IMAGE_BUILDER_DIR" image PROFILE=$profile PACKAGES="$packages" FILES="$files_dir"
+	BUILT_VERSION=$(awk -F= '/^CONFIG_VERSION_NUMBER/{print $2}' $TARGET_IMAGE_BUILDER_DIR/.config | tr -d '"')
 
 	if [ $? -ne 0 ]; then
 		echo "ERROR during image building for $profile"
@@ -137,7 +138,7 @@ build_firmware() {
 	else
 		[ ! -d "$OUTPUT_DIR" ] && mkdir -p $OUTPUT_DIR
 		target_image="$OUTPUT_DIR/${profile}-${VERSION_INFO}.bin"
-		cp $TARGET_IMAGE_BUILDER_DIR/bin/targets/${TARGET}/${SUBTARGET}/openwrt-${OPENWRT_VERSION}-${TARGET}-${SUBTARGET}-${profile}-squashfs-sysupgrade.bin $target_image
+		cp $TARGET_IMAGE_BUILDER_DIR/bin/targets/${TARGET}/${SUBTARGET}/openwrt-${BUILT_VERSION}-${TARGET}-${SUBTARGET}-${profile}-squashfs-sysupgrade.bin $target_image
 	fi
 }
 

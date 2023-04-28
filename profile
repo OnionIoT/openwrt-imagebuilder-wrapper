@@ -6,10 +6,12 @@ TARGET="ramips"
 SUBTARGET="mt76x8"
 
 # Default base URL from where openwrt SDKs are available for the respective openwrt version and targets
-BASE_URL="https://downloads.openwrt.org/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET"
+# BASE_URL="https://downloads.openwrt.org/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET"
+BASE_URL="http://downloads.onioniot.com.s3.amazonaws.com/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET"
 
 # imagebuilder file name available and downloaded from BASE_URL ((Needs change whenever new openwrt release is available with different gcc version))
-IMAGE_BUILDER_FILE="openwrt-imagebuilder-$OPENWRT_VERSION-$TARGET-$SUBTARGET.Linux-$(uname -p).tar.xz"
+# IMAGE_BUILDER_FILE="openwrt-imagebuilder-$OPENWRT_VERSION-$TARGET-$SUBTARGET.Linux-$(uname -p).tar.xz"
+IMAGE_BUILDER_FILE="openwrt-imagebuilder-v$OPENWRT_VERSION-$TARGET-$SUBTARGET.Linux-$(uname -p).tar.xz"
 IMAGE_BUILDER_URL="$BASE_URL/$IMAGE_BUILDER_FILE"
 
 # Additions directory copy custom files into image builder dir
@@ -17,7 +19,8 @@ ADDITIONS_DIR="$PWD/additions"
 
 ## specify ipk repos to be included in the firmware (each repo in new line) 
 PACKAGE_REPOS="
-src/gz onion http://repo.onioniot.com/omega2/packages/openwrt-$OPENWRT_VERSION/onion
+src/gz onion_core http://downloads.onioniot.com/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET/packages
+src/gz onion_packages http://repo.onioniot.com/omega2/packages/openwrt-$OPENWRT_VERSION/onion
 "
 
 # PACKAGE_REPOS="

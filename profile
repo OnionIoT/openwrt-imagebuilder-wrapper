@@ -2,6 +2,7 @@
 
 # Stable OpenWrt Release version (Needs change whenever new openwrt release is available)
 OPENWRT_VERSION="22.03.3"
+ARCH="mipsel_24kc"
 TARGET="ramips"
 SUBTARGET="mt76x8"
 
@@ -19,7 +20,12 @@ ADDITIONS_DIR="$PWD/additions"
 ## specify ipk repos to be included in the firmware (each repo in new line) 
 PACKAGE_REPOS="
 src/gz onion_core http://downloads.onioniot.com/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET/packages
-src/gz onion_packages http://repo.onioniot.com/omega2/packages/openwrt-$OPENWRT_VERSION/onion
+src/gz onion_base http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/base
+src/gz onion_luci http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/luci
+src/gz onion_packages http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/packages
+src/gz onion_routing http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/routing
+src/gz onion_telephony http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/telephony
+src/gz onion_openwrt_packages http://repo.onioniot.com/omega2/packages/openwrt-$OPENWRT_VERSION/onion
 "
 
 # PACKAGE_REPOS="
@@ -32,6 +38,7 @@ onion-repo-keys
 omega2-base
 omega2-base-files
 omega2-base-passwd
+omega2-ctrl
 "
 
 BUILD_MODELS="

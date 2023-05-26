@@ -87,8 +87,6 @@ download_builder() {
 }
 
 prepare_imagebuilder() {
-	rm -rf $TARGET_IMAGE_BUILDER_DIR/keys/*
-
 	if [ -n "$ADDITIONS_DIR" ] && [ -d "$ADDITIONS_DIR" ]; then
 		cp -a $ADDITIONS_DIR/* $TARGET_IMAGE_BUILDER_DIR
 	fi

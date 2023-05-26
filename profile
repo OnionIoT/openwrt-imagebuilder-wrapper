@@ -19,7 +19,8 @@ ADDITIONS_DIR="$PWD/additions"
 
 ## specify ipk repos to be included in the firmware (each repo in new line) 
 PACKAGE_REPOS="
-src/gz onion_core http://downloads.onioniot.com/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET/packages
+# Override openwrt_core repo with Onion Core repo
+src/gz openwrt_core http://downloads.onioniot.com/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET/packages
 src/gz onion_base http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/base
 src/gz onion_luci http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/luci
 src/gz onion_packages http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/packages

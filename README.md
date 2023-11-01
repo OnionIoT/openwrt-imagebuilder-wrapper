@@ -2,6 +2,10 @@
 
 Tools to build OpenWRT firwmare for the Omega2 and Omega2+ using the [OpenWRT Image Builder](https://openwrt.org/docs/guide-user/additional-software/imagebuilder) in an easily repeatable and maintainable way.
 
+## System Requirements
+
+We recommend using **Ubuntu 22.04** Linux to build this repo. See the [OpenWRT Build System Setup instructions](https://openwrt.org/docs/guide-developer/toolchain/install-buildsystem#debianubuntu) for details on what packages are required.
+
 # How to Use this Repo
 
 > By default, this repo is setup to build OpenWRT firmware for the Onion Omega2 and Omega2+

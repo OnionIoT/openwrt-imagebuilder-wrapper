@@ -40,6 +40,7 @@ omega2-base
 omega2-base-files
 omega2-base-passwd
 omega2-ctrl
+i2c-tools
 "
 
 BUILD_MODELS="

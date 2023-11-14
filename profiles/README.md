@@ -46,7 +46,7 @@ During development, there might be a need to pull compiled packages from a local
 In that case, change the value of `PACKAGE_REPOS`
 
 ```
-PACKAGE_REPOSE="
+PACKAGE_REPOS="
 src-link custom <FEED-DIRECTORY-HERE>
 "
 ```

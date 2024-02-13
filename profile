@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # Stable OpenWrt Release version (Needs change whenever new openwrt release is available)
-OPENWRT_VERSION="22.03.5"
+OPENWRT_RELEASE="22.03"
+OPENWRT_VERSION="${OPENWRT_RELEASE}.5"
 ARCH="mipsel_24kc"
 TARGET="ramips"
 SUBTARGET="mt76x8"

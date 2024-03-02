@@ -42,7 +42,9 @@ In the `bash onion_buildenv build_all_firmware` script, the env variable `IMAGE_
 
 Everything from the `additions/` directory will be copied into the image builder directory before build. 
 
-For example, adding a `additions/files` directory will allow you to include [custom configuration files](https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem#custom_files) in the firmware image.
+For example, adding a `additions/files` directory will allow you to include custom files (like [custom configuration files](https://openwrt.org/docs/guide-developer/toolchain/use-buildsystem#custom_files)) in the firmware image.
+
+> Note: adding .hidden files/directories to the firmware image works, but just not in the `/` directory.
 
 ---
 

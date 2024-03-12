@@ -1,10 +1,6 @@
 #  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #  SPDX-License-Identifier: MIT-0
 version: 0.2
-
-env:
-  variables:
-    VERSION: "22.03"
 phases:
   install:
     commands:
@@ -30,7 +26,8 @@ phases:
   post_build:
     commands:
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" = "0" ]; then exit 1; fi
-      - aws s3 cp --recursive ./output/ s3://$OUTPUT_BUCKET/omega2-dev/images/openwrt-$VERSION
+      - RELEASE=$(. $CODEBUILD_SRC_DIR/profile; echo ${OPENWRT_RELEASE=#v})
+      - aws s3 cp --recursive ./output/ s3://$OUTPUT_BUCKET/omega2-dev/images/openwrt-$RELEASE
 cache:
   paths:
     - /var/cache/apt/**/*

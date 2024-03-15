@@ -17,7 +17,7 @@ phases:
       - cp $CODEBUILD_SRC_DIR_packages_source_output/imagebuilder-profile $CODEBUILD_SRC_DIR/profile
       - cd $CODEBUILD_SRC_DIR
       - cat profile
-
+      - export DEV_BUILD=true
       - bash onion_buildenv setup_imagebuilder
   build:
     commands:

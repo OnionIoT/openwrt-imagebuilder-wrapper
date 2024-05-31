@@ -131,6 +131,10 @@ build_firmware() {
 	[ -n "$IMAGE_BUILDER_PACKAGES" ] && packages=$(echo -e $IMAGE_BUILDER_PACKAGES | tr '\n' ' ')
 
 	make -C "$TARGET_IMAGE_BUILDER_DIR" image PROFILE=$profile PACKAGES="$packages" FILES="$files_dir" || return 1
+
+	# Config CONFIG_VERSION_NUMBER is empty in OpenWRT imagebuilder 23.05 version by default. But profiles.json file 
+	# determines omega final image name with version field included. We can extract the version from our OPENWRT_VERSION
+	# variable in this case
 	if [ -z $(awk -F= '/^CONFIG_VERSION_NUMBER/{print $2}' $TARGET_IMAGE_BUILDER_DIR/.config | tr -d '"') ]; then
 		BUILT_VERSION=$OPENWRT_VERSION
 	else

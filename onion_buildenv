@@ -71,10 +71,12 @@ clean_imagebuilder() {
 }
 
 verify_builder() {
+	echo "> Verifying download"
 	verify_archive "$IMAGE_BUILDER_ZIP"
 }
 
 extract_builder() {
+	echo "> Extracting compressed Image Builder"
 	extract_archive "$BUILD_DIR" "$IMAGE_BUILDER_ZIP" || return 1
 	clean_imagebuilder
 	mv "$IMAGE_BUILDER_FILE" "$TARGET_IMAGE_BUILDER_DIR" || return 1
@@ -83,11 +85,13 @@ extract_builder() {
 }
 
 download_builder() {
+	echo "> Downloading compressed Image Builder"
 	download_file "$IMAGE_BUILDER_URL" "$IMAGE_BUILDER_ZIP"
 	return 0
 }
 
 prepare_imagebuilder() {
+	echo "> Preparing Image Builder"
 	if [ -n "$ADDITIONS_DIR" ] && [ -d "$ADDITIONS_DIR" ]; then
 		cp -a $ADDITIONS_DIR/* $TARGET_IMAGE_BUILDER_DIR
 	fi
@@ -95,6 +99,7 @@ prepare_imagebuilder() {
 
 update_package_repos() {
 	## add packages
+	echo "> Updating Image Builder Package Repos"
 
 	[ -z "$PACKAGE_REPOS" ] && return 0
 
@@ -127,6 +132,7 @@ build_firmware() {
 		echo "build_firmware <model>"
 		return 1
 	fi
+	echo "> Building $profile firmware image"
 
 	files_dir=$ADDITIONS_DIR/files
 	[ -n "$IMAGE_BUILDER_PACKAGES" ] && packages=$(echo -e $IMAGE_BUILDER_PACKAGES | tr '\n' ' ')
@@ -155,6 +161,7 @@ build_firmware() {
 build_all_firmware() {
 	local profiles="$@"
 	local prof
+	echo "> Building all firmware images"
 
 	profiles="${profiles:-${BUILD_MODELS}}"
 

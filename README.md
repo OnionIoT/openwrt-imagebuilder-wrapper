@@ -36,7 +36,7 @@ To build for a specific target device, use this command: `bash onion_buildenv bu
 
 OpenWRT packages can be added to the compiled firmware. 
 
-In the `bash onion_buildenv build_all_firmware` script, the env variable `IMAGE_BUILDER_PACKAGES` controls which packages are included in the firmware. Each package has to be added in na new line or in a space separated list.
+In the `bash onion_buildenv build_all_firmware` script, the env variable `IMAGE_BUILDER_PACKAGES` controls which packages are included in the firmware. Each package has to be added in a new line or in a space separated list.
 
 ## The `additions/` Directory
 

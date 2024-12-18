@@ -38,6 +38,12 @@ OpenWRT packages can be added to the compiled firmware.
 
 In the `bash onion_buildenv build_all_firmware` script, the env variable `IMAGE_BUILDER_PACKAGES` controls which packages are included in the firmware. Each package has to be added in a new line or in a space separated list.
 
+### Removing Packages from the Firmware
+
+The configuration can be changed so packages that are usually included by default do not get included in the firmware image.
+
+Add the package to be removed with a `-` prefix to the `IMAGE_BUILDER_PACKAGES` variable in the `profile` configuration file.
+
 ## The `additions/` Directory
 
 Everything from the `additions/` directory will be copied into the image builder directory before build. 

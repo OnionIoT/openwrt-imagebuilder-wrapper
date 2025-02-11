@@ -6,6 +6,8 @@ OPENWRT_VERSION="${OPENWRT_RELEASE}.3"
 ARCH="mipsel_24kc"
 TARGET="ramips"
 SUBTARGET="mt76x8"
+# By default the build date is included in the output file name. Set to n to remove the date from the output file name
+DATE_VERSION="y"
 
 # Default base URL from where openwrt SDKs are available for the respective openwrt version and targets
 # BASE_URL="https://downloads.openwrt.org/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET"

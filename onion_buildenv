@@ -12,6 +12,7 @@ BUILD_DIR="$PWD"
 
 TARGET_IMAGE_BUILDER_DIR="$BUILD_DIR/openwrt-imagebuilder"
 IMAGE_BUILDER_ZIP="$BUILD_DIR/${IMAGE_BUILDER_URL##*/}"
+IMAGE_BUILDER_USER_FILES="$TARGET_IMAGE_BUILDER_DIR/files"
 IMAGE_BUILDER_FILE="${IMAGE_BUILDER_ZIP//.tar.xz}"
 OUTPUT_DIR="$PWD/output"
 
@@ -87,7 +88,15 @@ download_builder() {
 	return 0
 }
 
+
+clean_additions() {
+	if [ -n "$IMAGE_BUILDER_USER_FILES" ] && [ -d "$IMAGE_BUILDER_USER_FILES" ]; then
+		rm -rf "$IMAGE_BUILDER_USER_FILES" || return 1
+	fi
+}
+
 prepare_imagebuilder() {
+	clean_additions	
 	if [ -n "$ADDITIONS_DIR" ] && [ -d "$ADDITIONS_DIR" ]; then
 		cp -a $ADDITIONS_DIR/* $TARGET_IMAGE_BUILDER_DIR
 	fi

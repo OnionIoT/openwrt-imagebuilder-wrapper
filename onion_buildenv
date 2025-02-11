@@ -16,8 +16,11 @@ IMAGE_BUILDER_USER_FILES="$TARGET_IMAGE_BUILDER_DIR/files"
 IMAGE_BUILDER_FILE="${IMAGE_BUILDER_ZIP//.tar.xz}"
 OUTPUT_DIR="$PWD/output"
 
-DATE=$(date +"%Y%m%d")
-VERSION_INFO="${OPENWRT_VERSION}-${DATE}"
+if [ -z $DATE_VERSION ] || [ $DATE_VERSION == "y" ]; then  
+	DATE=$(date +"-%Y%m%d")
+fi
+
+VERSION_INFO="${OPENWRT_VERSION}${DATE}"
 
 download_file() {
 	local url=$1

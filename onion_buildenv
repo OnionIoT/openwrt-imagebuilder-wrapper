@@ -110,11 +110,18 @@ update_package_repos() {
 
 	[ -z "$PACKAGE_REPOS" ] && return 0
 
-	echo -e "$PACKAGE_REPOS" > $TARGET_IMAGE_BUILDER_DIR/repositories.conf
-	cat $TARGET_IMAGE_BUILDER_DIR/repositories.conf.org >> $TARGET_IMAGE_BUILDER_DIR/repositories.conf
-
+	## Add packages from th profile but filter out those we want to remove
+	echo -e "$PACKAGE_REPOS" | grep -v -e "^\-" >  $TARGET_IMAGE_BUILDER_DIR/repositories.conf
+	
+	## Create the grep filter for any packages in the profile with a leading '-' symbol to be filtered out
+	EXCLUDES=$(echo -e  "$PACKAGE_REPOS" | grep "^\-" | awk -F" " '{ print $2 }')
+	for EX in $EXCLUDES; do EXCLUDE_CMD="$EXCLUDE_CMD -e $EX"; done
+	
+	## Filter the original opwenwrt sdk repo list to remove those we want to remove
+	cat $TARGET_IMAGE_BUILDER_DIR/repositories.conf.org | grep -v $EXCLUDE_CMD >> $TARGET_IMAGE_BUILDER_DIR/repositories.conf
 	return 0
 }
+
 
 update_imagebuilder() {
 	builder_exist || return 1

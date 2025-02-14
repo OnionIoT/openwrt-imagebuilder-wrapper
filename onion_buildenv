@@ -12,11 +12,15 @@ BUILD_DIR="$PWD"
 
 TARGET_IMAGE_BUILDER_DIR="$BUILD_DIR/openwrt-imagebuilder"
 IMAGE_BUILDER_ZIP="$BUILD_DIR/${IMAGE_BUILDER_URL##*/}"
+IMAGE_BUILDER_USER_FILES="$TARGET_IMAGE_BUILDER_DIR/files"
 IMAGE_BUILDER_FILE="${IMAGE_BUILDER_ZIP//.tar.xz}"
 OUTPUT_DIR="$PWD/output"
 
-DATE=$(date +"%Y%m%d")
-VERSION_INFO="${OPENWRT_VERSION}-${DATE}"
+if [ -z $DATE_VERSION ] || [ $DATE_VERSION == "y" ]; then  
+	DATE=$(date +"-%Y%m%d")
+fi
+
+VERSION_INFO="${OPENWRT_VERSION}${DATE}"
 
 download_file() {
 	local url=$1
@@ -90,8 +94,16 @@ download_builder() {
 	return 0
 }
 
+
+clean_additions() {
+	if [ -n "$IMAGE_BUILDER_USER_FILES" ] && [ -d "$IMAGE_BUILDER_USER_FILES" ]; then
+		rm -rf "$IMAGE_BUILDER_USER_FILES" || return 1
+	fi
+}
+
 prepare_imagebuilder() {
 	echo "> Preparing Image Builder"
+	clean_additions	
 	if [ -n "$ADDITIONS_DIR" ] && [ -d "$ADDITIONS_DIR" ]; then
 		cp -a $ADDITIONS_DIR/* $TARGET_IMAGE_BUILDER_DIR
 	fi
@@ -103,9 +115,15 @@ update_package_repos() {
 
 	[ -z "$PACKAGE_REPOS" ] && return 0
 
-	echo -e "$PACKAGE_REPOS" > $TARGET_IMAGE_BUILDER_DIR/repositories.conf
-	cat $TARGET_IMAGE_BUILDER_DIR/repositories.conf.org >> $TARGET_IMAGE_BUILDER_DIR/repositories.conf
-
+	## Add packages from th profile but filter out those we want to remove
+	echo -e "$PACKAGE_REPOS" | grep -v -e "^\-" >  $TARGET_IMAGE_BUILDER_DIR/repositories.conf
+	
+	## Create the grep filter for any packages in the profile with a leading '-' symbol to be filtered out
+	EXCLUDES=$(echo -e  "$PACKAGE_REPOS" | grep "^\-" | awk -F" " '{ print $2 }')
+	for EX in $EXCLUDES; do EXCLUDE_CMD="$EXCLUDE_CMD -e $EX"; done
+	
+	## Filter the original opwenwrt sdk repo list to remove those we want to remove
+	cat $TARGET_IMAGE_BUILDER_DIR/repositories.conf.org | grep -v $EXCLUDE_CMD >> $TARGET_IMAGE_BUILDER_DIR/repositories.conf
 	return 0
 }
 
@@ -184,6 +202,7 @@ commands="
 setup_imagebuilder
 update_imagebuilder
 clean_imagebuilder
+update_package_repos
 build_firmware
 build_all_firmware
 "

@@ -6,6 +6,7 @@ OPENWRT_VERSION="${OPENWRT_RELEASE}.3"
 ARCH="mipsel_24kc"
 TARGET="ramips"
 SUBTARGET="mt76x8"
+DATE_VERSION="n"
 
 # Default base URL from where openwrt SDKs are available for the respective openwrt version and targets
 # BASE_URL="https://downloads.openwrt.org/releases/$OPENWRT_VERSION/targets/$TARGET/$SUBTARGET"
@@ -29,6 +30,9 @@ src/gz onion_packages http://downloads.onioniot.com/releases/$OPENWRT_VERSION/pa
 src/gz onion_routing http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/routing
 src/gz onion_telephony http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/telephony
 src/gz onion_openwrt_packages http://repo.onioniot.com/omega2/packages/openwrt-$OPENWRT_VERSION/onion
+src/gz onion_openwrt_packages_core http://repo.onioniot.com/omega2/packages/openwrt-$OPENWRT_VERSION/core
+-src/gz openwrt_luci
+-src/gz openwrt_telephony
 "
 
 # PACKAGE_REPOS="
@@ -43,6 +47,30 @@ omega2-base-files
 omega2-base-passwd
 omega2-ctrl
 i2c-tools
+openssh-sftp-server
+libsqlite3
+libubox
+libubus
+ubox
+ubus
+dosfstools
+php8
+php8-cli
+php8-cgi
+php8-mod-curl
+php8-mod-session
+php8-fastcgi
+sqlite3-cli
+mosquitto-client-ssl
+uhttpd
+uhttpd-mod-ubus
+rpcd
+php8-mod-pdo
+php8-mod-pdo-sqlite
+-dnsmasq
+omega2-script
+kmod-pwm-mediatek-ramips
+kmod-p44-ledchain
 "
 
 BUILD_MODELS="

@@ -86,8 +86,10 @@ extract_builder() {
 	return 0
 }
 
+
 download_builder() {
-	# download_file "$IMAGE_BUILDER_URL" "$IMAGE_BUILDER_ZIP"
+	echo "> Downloading compressed Image Builder"
+	download_file "$IMAGE_BUILDER_URL" "$IMAGE_BUILDER_ZIP"
 	return 0
 }
 

@@ -132,6 +132,7 @@ build_firmware() {
 		echo "build_firmware <model>"
 		return 1
 	fi
+	update_imagebuilder
 	echo "> Building $profile firmware image"
 
 	files_dir=$ADDITIONS_DIR/files

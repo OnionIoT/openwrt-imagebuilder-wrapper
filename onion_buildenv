@@ -90,8 +90,15 @@ download_builder() {
 	return 0
 }
 
+clean_additions() {
+	if [ -n "$IMAGE_BUILDER_USER_FILES" ] && [ -d "$IMAGE_BUILDER_USER_FILES" ]; then
+		rm -rf "$IMAGE_BUILDER_USER_FILES" || return 1
+	fi
+}
+
 prepare_imagebuilder() {
 	echo "> Preparing Image Builder"
+	clean_additions	
 	if [ -n "$ADDITIONS_DIR" ] && [ -d "$ADDITIONS_DIR" ]; then
 		cp -a $ADDITIONS_DIR/* $TARGET_IMAGE_BUILDER_DIR
 	fi

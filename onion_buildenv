@@ -132,10 +132,11 @@ build_firmware() {
 		echo "build_firmware <model>"
 		return 1
 	fi
+	update_imagebuilder
 	echo "> Building $profile firmware image"
 
 	files_dir=$ADDITIONS_DIR/files
-	[ -n "$IMAGE_BUILDER_PACKAGES" ] && packages=$(echo -e $IMAGE_BUILDER_PACKAGES | tr '\n' ' ')
+	[ -n "$IMAGE_BUILDER_PACKAGES" ] && packages=$(echo -e "$IMAGE_BUILDER_PACKAGES" | grep -v '^#' | tr '\n' ' ') # remove any packages starting with a hash (comment) character,  condense to single line
 
 	make -C "$TARGET_IMAGE_BUILDER_DIR" image PROFILE=$profile PACKAGES="$packages" FILES="$files_dir" || return 1
 

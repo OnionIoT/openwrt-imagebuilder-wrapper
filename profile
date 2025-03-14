@@ -29,6 +29,7 @@ src/gz onion_packages http://downloads.onioniot.com/releases/$OPENWRT_VERSION/pa
 src/gz onion_routing http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/routing
 src/gz onion_telephony http://downloads.onioniot.com/releases/$OPENWRT_VERSION/packages/$ARCH/telephony
 src/gz onion_openwrt_packages http://repo.onioniot.com/omega2/packages/openwrt-$OPENWRT_VERSION/onion
+src/gz onion_openwrt_core http://repo.onioniot.com/omega2/packages/openwrt-$OPENWRT_VERSION/core
 "
 
 # PACKAGE_REPOS="
